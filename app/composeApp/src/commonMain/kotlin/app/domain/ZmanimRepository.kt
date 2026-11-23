@@ -8,6 +8,7 @@ import io.github.kdroidfilter.kosherkotlin.Zman
 import io.github.kdroidfilter.kosherkotlin.hebrewcalendar.HebrewDateFormatter
 import io.github.kdroidfilter.kosherkotlin.hebrewcalendar.JewishCalendar
 import io.github.kdroidfilter.kosherkotlin.util.GeoLocation
+import io.github.kdroidfilter.kosherkotlin.util.ItimLabinaCalculator
 import io.github.kdroidfilter.kosherkotlin.util.NOAACalculator
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -54,6 +55,25 @@ class ZmanimRepository {
             if (settings.useElevation) "גובה ${city.elevationMeters.trimNumber()} מ׳" else "גובה פני הים"
 
         val plan = when (settings.luach) {
+            Luach.ITIM_LABINA -> listOf(
+                row(NIGHT, solarMidnight),
+                row(MORNING, calendar.alos90ItimLabina),
+                row(MORNING, alos),
+                row(MORNING, calendar.misheyakir11Point5Degrees),
+                PlanRow(MORNING, "הנץ החמה", elevationNote, sunrise),
+                row(MORNING, calendar.sofZmanShmaMGA72Minutes),
+                row(MORNING, calendar.sofZmanShmaGRA),
+                row(MORNING, calendar.sofZmanTfilaGRA),
+                row(NOON, chatzos),
+                row(NOON, calendar.minchaGedola),
+                row(NOON, calendar.minchaKetana),
+                row(EVENING, calendar.plagHamincha),
+                row(EVENING, calendar.candleLighting, appliesToday = jewishCalendar.hasCandleLighting),
+                PlanRow(EVENING, "שקיעה", elevationNote, sunset),
+                row(EVENING, tzais),
+                row(EVENING, calendar.tzais72ItimLabina),
+            )
+
             // The order the אור החיים prints, all of it zmaniyos minutes off the GRA day.
             Luach.OHR_HACHAIM -> listOf(
                 row(NIGHT, solarMidnight),
@@ -295,6 +315,7 @@ class ZmanimRepository {
             candleLightingOffset = settings.candleLightingOffset.toDouble(),
         ).apply {
             astronomicalCalculator = when (settings.luach) {
+                Luach.ITIM_LABINA -> ItimLabinaCalculator()
                 Luach.OHR_HACHAIM -> NOAACalculator()
             }
             jewishCalendar.inIsrael = city.inIsrael
@@ -335,16 +356,19 @@ private fun row(group: String, zman: Zman.DateBased, appliesToday: Boolean = tru
 
 /** *Alos* as the chosen luach prints it. */
 private fun ComplexZmanimCalendar.luachAlos(settings: LuachSettings) = when (settings.luach) {
+    Luach.ITIM_LABINA -> alos72ItimLabina
     Luach.OHR_HACHAIM -> alos72Zmanis
 }
 
 /** *Tzais* as the chosen luach prints it. */
 private fun ComplexZmanimCalendar.luachTzais(settings: LuachSettings) = when (settings.luach) {
+    Luach.ITIM_LABINA -> tzaisGeonim18MinutesItimLabina
     Luach.OHR_HACHAIM -> tzais13Point5MinutesZmanis
 }
 
 /** *Tzais* of Rabbeinu Tam as the chosen luach prints it. */
 private fun ComplexZmanimCalendar.luachTzaisRabeinuTam(settings: LuachSettings) = when (settings.luach) {
+    Luach.ITIM_LABINA -> tzais72ItimLabina
     Luach.OHR_HACHAIM -> tzais72Zmanis
 }
 

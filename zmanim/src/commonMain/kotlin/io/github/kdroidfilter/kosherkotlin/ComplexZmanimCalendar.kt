@@ -132,7 +132,7 @@ import kotlin.time.Duration.Companion.minutes
  */
 class ComplexZmanimCalendar(
     location: GeoLocation
-) : ZmanimCalendar(location) {
+) : ZmanimCalendar(location), ItimLabinaZmanim {
 
     constructor(
         location: GeoLocation = GeoLocation(),
@@ -5431,6 +5431,7 @@ class ComplexZmanimCalendar(
             sofZmanBiurChametzMGA72Minutes,
             sofZmanBiurChametzMGA16Point1Degrees,
             solarMidnight,
+            *itimLabinaZmanim(),
             misheyakir66MinutesZmanis,
             misheyakir60MinutesZmanis,
             tzais13Point5MinutesZmanis,

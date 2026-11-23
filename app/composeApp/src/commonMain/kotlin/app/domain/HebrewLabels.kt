@@ -42,6 +42,7 @@ private fun ZmanAuthority.hebrewName(): String = when (this) {
     ZmanAuthority.GRA -> "גר״א"
     ZmanAuthority.MGA -> "מג״א"
     ZmanAuthority.GEONIM -> "גאונים"
+    ZmanAuthority.ITIM_LABINA -> "עתים לבינה"
     ZmanAuthority.OHR_HACHAIM -> "אור החיים"
     ZmanAuthority.RABEINU_TAM -> "רבנו תם"
     ZmanAuthority.BAAL_HATANYA -> "בעל התניא"
