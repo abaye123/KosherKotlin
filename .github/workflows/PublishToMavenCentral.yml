@@ -7,6 +7,7 @@ on:
 
 jobs:
   publish:
+    if: github.repository == 'kdroidFilter/KosherKotlin' # fork: our tags must not publish
     runs-on: macos-latest
 
     steps:

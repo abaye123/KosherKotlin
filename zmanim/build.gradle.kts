@@ -75,7 +75,7 @@ kotlin {
 
 mavenPublishing {
     coordinates(
-        groupId = "io.github.kdroidfilter",
+        groupId = "io.github.abaye123", // fork: never publish under the upstream coordinates
         artifactId = "kosherkotlin",
         version = version.toString()
     )
@@ -84,7 +84,7 @@ mavenPublishing {
         name.set("Kosher Kotlin")
         description.set("KosherJava Zmanim API / Library port to Kotlin. KosherJava is a library for calculating astronomical and religious dates and times based on location.")
         inceptionYear.set("2025")
-        url.set("https://github.com/kdroidFilter/KosherKotlin/")
+        url.set("https://github.com/abaye123/KosherKotlin/")
 
         licenses {
             license {
@@ -102,12 +102,13 @@ mavenPublishing {
         }
 
         scm {
-            connection.set("scm:git:https://github.com/kdroidFilter/KosherKotlin.git")
-            developerConnection.set("scm:git:https://github.com/kdroidFilter/KosherKotlin.git")
-            url.set("https://github.com/kdroidFilter/KosherKotlin")
+            connection.set("scm:git:https://github.com/abaye123/KosherKotlin.git")
+            developerConnection.set("scm:git:https://github.com/abaye123/KosherKotlin.git")
+            url.set("https://github.com/abaye123/KosherKotlin")
         }
     }
 
     publishToMavenCentral()
-    signAllPublications()
+    // fork: a local build has no signing key
+    if (providers.gradleProperty("signingInMemoryKey").isPresent) signAllPublications()
 }
